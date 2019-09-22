@@ -39,7 +39,11 @@ export default function Shop(props) {
     
     function addToCart(count, product){
         if(product.name in cart){
-            cart[product.name][1]= count
+            if(cart[product.name][1]!= count){
+                cart[product.name][1]= count
+            } else {
+                return
+            }
         } else {
            cart[product.name] = [product, count]
         }
@@ -47,6 +51,7 @@ export default function Shop(props) {
             setCheckOutValid(true)
         }
         setCartChanged(cartChanged +1)
+        setSubtotal(0)
         calculateSubTotal()
     }
     function removeItem(item){
@@ -71,8 +76,8 @@ export default function Shop(props) {
         setSubtotal(0)
         props.history.push('/done');
     }
+
     function calculateSubTotal (){
-        setSubtotal(0)
         for(let key in cart){
             setSubtotal(subtotal + cart[key][0].price * cart[key][1])
         }

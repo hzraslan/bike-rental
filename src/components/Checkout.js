@@ -2,11 +2,14 @@ import React, {useEffect, useState} from 'react';
 import '../css/styles.css';
 export default function Checkout(props) {
     const [cart, setCart] = useState(props.cart)
+    const [subtotal, setSubtotal] = useState(props.subtotal)
 
     const cheoutBtnActive = <div className="checkout-button-active" onClick={checkOutOrder}>Checkout</div>
     const checkoutBtnPassive = <div className="checkout-button-passive">Checkout</div>
     useEffect(()=>{
         setCart(props.cart)
+        setSubtotal(0)
+        setSubtotal(props.subtotal)
     }, [props.cartChanged])
     function checkOutOrder (){
         props.checkoutOrder()
@@ -35,7 +38,7 @@ export default function Checkout(props) {
             </div>
             <div className="subtotal-order order">
                     <div className="subtotal">Subtotal</div>
-                    <div className="subtotal-amount">${props.subtotal}</div>
+                    <div className="subtotal-amount">${subtotal}</div>
                     {
                         props.checkOutValid ? cheoutBtnActive: checkoutBtnPassive
                     }
