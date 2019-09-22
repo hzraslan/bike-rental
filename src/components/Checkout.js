@@ -2,17 +2,27 @@ import React, {useEffect, useState} from 'react';
 import '../css/styles.css';
 export default function Checkout(props) {
     const [cart, setCart] = useState(props.cart)
-    const [subtotal, setSubtotal] = useState(props.subtotal)
+    const [subtotal, setSubtotal] = useState(0)
 
     const cheoutBtnActive = <div className="checkout-button-active" onClick={checkOutOrder}>Checkout</div>
     const checkoutBtnPassive = <div className="checkout-button-passive">Checkout</div>
     useEffect(()=>{
         setCart(props.cart)
-        setSubtotal(0)
-        setSubtotal(props.subtotal)
+       subtotalChange()
     }, [props.cartChanged])
     function checkOutOrder (){
         props.checkoutOrder()
+    }
+    function removeItem(key){
+        props.removeItem(cart[key][0])
+        subtotalChange()
+    }
+    function subtotalChange(){
+        let a = 0
+        for(let key in cart){
+            a +=cart[key][0].price * cart[key][1]
+            setSubtotal(a)
+        }
     }
     return (
         <div className="checkout-container" >
@@ -30,7 +40,7 @@ export default function Checkout(props) {
                                     <div className="order-name">{key}</div>
                                     <div className="due">${cart[key][0].price* cart[key][1]}</div>
                                     <div className="count">{cart[key][1]}</div>
-                                    <div className="remove-item" onClick={()=> props.removeItem(cart[key][0])}> remove</div>
+                                    <div className="remove-item" onClick={()=>removeItem(key)}> remove</div>
                                 </div>
                             )
                         })

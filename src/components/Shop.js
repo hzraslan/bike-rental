@@ -35,7 +35,6 @@ export default function Shop(props) {
     const [checkOutValid, setCheckOutValid] = useState(false)
     const [cart, setCart] = useState({})
     const [cartChanged, setCartChanged] = useState(0)
-    const [subtotal, setSubtotal] = useState(0)
     
     function addToCart(count, product){
         if(product.name in cart){
@@ -51,8 +50,6 @@ export default function Shop(props) {
             setCheckOutValid(true)
         }
         setCartChanged(cartChanged +1)
-        setSubtotal(0)
-        calculateSubTotal()
     }
     function removeItem(item){
         if (item.name in cart){
@@ -65,7 +62,6 @@ export default function Shop(props) {
                     }
                 }
             }
-            calculateSubTotal()
         }
         setCartChanged(cartChanged +1)
     }
@@ -73,15 +69,9 @@ export default function Shop(props) {
         setCart({})
         setCheckOutValid(false)
         setCartChanged(0)
-        setSubtotal(0)
         props.history.push('/done');
     }
 
-    function calculateSubTotal (){
-        for(let key in cart){
-            setSubtotal(subtotal + cart[key][0].price * cart[key][1])
-        }
-    }
     return (
         <div className="shop-container"  >
             <div className="nav" style={styles.navigation}></div>
@@ -109,8 +99,7 @@ export default function Shop(props) {
                     checkOutValid={checkOutValid} 
                     cartChanged={cartChanged} 
                     removeItem={removeItem}
-                    checkoutOrder={checkoutOrder}
-                    subtotal={subtotal}>
+                    checkoutOrder={checkoutOrder}>
                     </Checkout>
                 </div>
             </div>
